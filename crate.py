@@ -255,7 +255,7 @@ class CRATEFeat(nn.Module):
         self.depth = depth
         if pretrained_path is not None:
             state_dict = torch.load(pretrained_path, map_location=torch.device('cpu'))
-            self.model.load_state_dict(state_dict['model'], strict=True)
+            self.model.load_state_dict(state_dict['model'], strict=False)
             print('Loading weight from {}'.format(pretrained_path))
         self.model = self.patch_vit_resolution(self.model, stride = 8)
         self.model.to(device)
