@@ -241,7 +241,7 @@ class CRATEFeat(nn.Module):
         if crate_arch == 'small':
             self.model = CRATE_small_21k()
         elif crate_arch == 'base':
-            self.model = CRATE_base_21k()
+            self.model = CRATE_base_768()
         elif crate_arch == 'demo':
             self.model = CRATE_base_demo()
             self.model.mlp_head = nn.Sequential(
