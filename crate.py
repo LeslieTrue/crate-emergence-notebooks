@@ -221,6 +221,17 @@ def CRATE_base_21k():
                     dropout=0.0,
                     emb_dropout=0.0,
                     dim_head=768//12)
+
+def CRATE_base_768():
+    return CRATE(image_size=224,
+                    patch_size=8,
+                    num_classes=768,
+                    dim=768,
+                    depth=12,
+                    heads=12,
+                    dropout=0.0,
+                    emb_dropout=0.0,
+                    dim_head=768//12)
 import math
 from typing import Union, List, Tuple
 import types
