@@ -141,7 +141,7 @@ def plot_pca(pil_image: Image.Image, pca_image: numpy.ndarray, save_dir: str, la
         pca_pil.save(comp_file_path)
 
 def plot_pca_mask(pil_image: Image.Image, pca_image: numpy.ndarray, save_dir: str, last_components_rgb: bool = True,
-             save_resized=True, save_prefix: str = ''):
+             save_resized=True, save_prefix: str = '', th = 0.5):
     """
     finding pca of a set of images.
     :param pil_image: The original PIL image.
@@ -159,7 +159,7 @@ def plot_pca_mask(pil_image: Image.Image, pca_image: numpy.ndarray, save_dir: st
 
     n_components = pca_image.shape[2]
     # for threshold in [0.15, 0.2, 0.3, 0.4, 0.5, 0.6]:
-    for threshold in [0.4]:
+    for threshold in [th]:
         for comp_idx in range(n_components):
             comp = pca_image[:, :, comp_idx]
             comp_min = comp.min(axis=(0, 1))
@@ -229,7 +229,6 @@ if __name__ == "__main__":
             first_components = pca(images_paths, args.load_size, args.layer, args.facet, args.bin, args.stride, args.model_type,
                                 1, args.all_together)
 
-            print("saving images")
             for image_path, (pil_image, pca_image) in tqdm(zip(images_paths, first_components)):
                 save_prefix = image_path.stem
                 mask = plot_pca_mask(pil_image, pca_image, str(save_dir) + f'/layer{layer}/', False, args.save_resized, save_prefix)

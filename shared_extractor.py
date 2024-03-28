@@ -47,8 +47,8 @@ class CRATEExtractor:
         """
         if model_type == 'crate_mae_b16':
             # model = mae_crate_base(lambd=5.0)
-            model = crate_base(lambd = 0.5)
-            state_dict = torch.load('crate-mae-base-lmd0.5-checkpoint-799.pth', map_location=torch.device('cpu'))
+            model = crate_base(lambd = 5)
+            state_dict = torch.load('crate-mae-base-lmd5-checkpoint-799.pth', map_location=torch.device('cpu'))
             # state_dict = torch.load('/home/tianzhe/crate/cutler_crate/pca/crate-mae-base-lmd0.5-checkpoint-799.pth', map_location=torch.device('cpu'))
         else:
             raise NotImplementedError
@@ -60,8 +60,8 @@ class CRATEExtractor:
         # else:
         #     raise NotImplementedError
         # state_dict = torch.load('crate-mae-base-lmd0.5-checkpoint-799.pth', map_location=torch.device('cpu'))
-        msg = model.load_state_dict(state_dict['model'], strict=False)
-        print(msg)
+        model.load_state_dict(state_dict['model'], strict=False)
+
         
         return model
     @staticmethod
@@ -73,7 +73,7 @@ class CRATEExtractor:
         :return: the interpolation method
         """
         def interpolate_pos_encoding(self, x: torch.Tensor, w: int, h: int) -> torch.Tensor:
-            print(x.shape)
+
             npatch = x.shape[1] - 1
             N = self.decoder_pos_embed.shape[1] - 1
             if npatch == N and w == h:
@@ -92,7 +92,7 @@ class CRATEExtractor:
             # we add a small number to avoid floating point error in the interpolation
             # see discussion at https://github.com/facebookresearch/dino/issues/8
             w0, h0 = w0 + 0.1, h0 + 0.1
-            print("patch_pos_shape:", patch_pos_embed.shape)
+            # print("patch_pos_shape:", patch_pos_embed.shape)
             patch_pos_embed = nn.functional.interpolate(
                 patch_pos_embed.reshape(1, int(math.sqrt(N)), int(math.sqrt(N)), dim).permute(0, 3, 1, 2),
                 scale_factor=(w0 / math.sqrt(N), h0 / math.sqrt(N)),
@@ -101,8 +101,8 @@ class CRATEExtractor:
             )
             assert int(w0) == patch_pos_embed.shape[-2] and int(h0) == patch_pos_embed.shape[-1]
             patch_pos_embed = patch_pos_embed.permute(0, 2, 3, 1).view(1, -1, dim)
-            print("patch_pos_shape:", torch.cat((class_pos_embed.unsqueeze(0), patch_pos_embed), dim=1).shape)
-            print(torch.cat((class_pos_embed.unsqueeze(0), patch_pos_embed), dim=1))
+            # print("patch_pos_shape:", torch.cat((class_pos_embed.unsqueeze(0), patch_pos_embed), dim=1).shape)
+            # print(torch.cat((class_pos_embed.unsqueeze(0), patch_pos_embed), dim=1))
             # exit()
             return torch.cat((class_pos_embed.unsqueeze(0), patch_pos_embed), dim=1)
 
@@ -161,7 +161,7 @@ class CRATEExtractor:
                             bin: bool = False, include_cls: bool = False) -> torch.Tensor:
         
         B, C, H, W = batch.shape
-        print("batch shape:", batch.shape)
+        # print("batch shape:", batch.shape)
         self.load_size = (H, W)
         self.num_patches = (1 + (H - self.p) // self.stride[0], 1 + (W - self.p) // self.stride[1])
         
