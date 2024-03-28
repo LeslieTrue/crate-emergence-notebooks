@@ -48,7 +48,7 @@ class CRATEExtractor:
         if model_type == 'crate_mae_b16':
             # model = mae_crate_base(lambd=5.0)
             model = crate_base(lambd = 5)
-            state_dict = torch.load('crate-mae-base-lmd5-checkpoint-799.pth', map_location=torch.device('cpu'))
+            state_dict = torch.load('crate-mae-base-lmd5.0-checkpoint-799.pth', map_location=torch.device('cpu'))
             # state_dict = torch.load('/home/tianzhe/crate/cutler_crate/pca/crate-mae-base-lmd0.5-checkpoint-799.pth', map_location=torch.device('cpu'))
         else:
             raise NotImplementedError
